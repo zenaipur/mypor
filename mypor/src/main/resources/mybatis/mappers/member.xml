@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper namespace -->
+<mapper namespace="mapper.member">
+
+	<!-- memberVO resultMap setting -->
+	<resultMap id="memResult" type="memberVO">
+		<result property="id" column="id" />
+		<result property="pwd" column="pwd" />
+		<result property="name" column="name" />
+		<result property="email" column="email" />
+		<result property="joinDate" column="joinDate" />
+	</resultMap>
+
+	<!-- 전체 회원 조회 쿼리문 -->
+	<select id="selectAllMemberList" resultMap="memResult">
+      <![CDATA[
+         select * from t_member	order by joinDate desc	 	
+      ]]>
+	</select>
+
+	<!-- 회원 정보 추가 쿼리문 -->
+	<insert id="insertMember" parameterType="memberVO">
+		<![CDATA[
+		 insert into t_member(id,pwd, name, email)
+		 values(#{id}, #{pwd}, #{name}, #{email})
+		]]>
+	</insert>
+
+	<!-- 회원 정보 수정 쿼리문 -->
+	<update id="updateMember" parameterType="memberVO">
+     <![CDATA[
+	     update t_member
+	     set pwd=#{pwd}, name=#{name}, email=#{email}
+	     where
+	     id=#{id}
+      ]]>
+	</update>
+
+	<!-- 회원 정보 삭제 쿼리문 -->
+	<delete id="deleteMember" parameterType="String">
+	<![CDATA[
+	   delete from  t_member
+	   where
+	   id=#{id}
+	]]>
+	</delete>
+
+	<!-- 회원 아이디/패스워드 확인 쿼리문 -->
+	<select id="loginById" resultType="memberVO"
+		parameterType="memberVO">
+	<![CDATA[
+		select * from t_member	
+		where id=#{id} and pwd=#{pwd}		
+	]]>
+	</select>
+	
+	<!-- 회원 아이디 확인 쿼리문 -->
+	<select id="selectMemberById" resultType="memberVO"
+		parameterType="String">
+	<![CDATA[
+		select * from t_member	
+		where id=#{id}
+	]]>
+	</select>
+</mapper>
